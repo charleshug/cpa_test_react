@@ -124,12 +124,25 @@ class QuestionBar extends React.Component{
     }
 }
 
+class FlagButton extends React.Component{
+    render(){
+        const number = this.props.number
+        return(
+            <div>
+                <button className="question-button" value={number}>{number}</button>
+                <input type="checkbox" name={"flag_" + number} id={"flag_"+ number} />
+            </div>
+        );
+    }
+}
+
 class BottomBar extends React.Component{
     constructor(props){
         super(props);
     }
 
     render(){
+        
         return(
             <div className="bottom-bar">
                 <div className="bottom-reminder">
@@ -140,14 +153,8 @@ class BottomBar extends React.Component{
                 </div>
 
                 <div className="flag-buttons">
-                    <div>
-                        <button className="question-button" value="1">1</button>
-                        <input type="checkbox" name="flag_1" id="flag_1" />
-                    </div>
-                    <div>
-                        <button className="question-button" value="2">2</button>
-                        <input type="checkbox" name="flag_2" id="flag_2" />
-                    </div>
+                    <FlagButton number={1} />
+                    <FlagButton number={2} />
                 </div>
 
                 <div className="arrow-nav">
@@ -169,7 +176,7 @@ class App extends React.Component {
             <div className="App">
                 <TopBar questionBank={this.props.questionBank}/>
                 <QuestionBar />
-                <BottomBar />
+                <BottomBar questionBank={this.props.questionBank} />
             </div>
         );
     }
