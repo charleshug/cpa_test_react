@@ -27,17 +27,12 @@ class TopBar extends React.Component{
     }
 }
 
-class App extends React.Component {
+class QuestionBar extends React.Component{
     constructor(props){
         super(props);
-        this.state = { time: 30 };
     }
     render(){
-
-        return (
-            <div className="App">
-            <TopBar questionBank={this.props.questionBank}/>
-
+        return(
             <div className="question-area">
                 <div className="question active">
                     <div className="question-number">
@@ -125,13 +120,23 @@ class App extends React.Component {
                 </div>
 
             </div>
+        );
+    }
+}
 
+class BottomBar extends React.Component{
+    constructor(props){
+        super(props);
+    }
+
+    render(){
+        return(
             <div className="bottom-bar">
                 <div className="bottom-reminder">
-                <label>
-                    <input type="checkbox" name="reminder" checked disabled></input>
-                    = Reminder
-                </label>
+                    <label>
+                        <input type="checkbox" name="reminder" checked disabled></input>
+                        = Reminder
+                    </label>
                 </div>
 
                 <div className="flag-buttons">
@@ -144,15 +149,30 @@ class App extends React.Component {
                         <input type="checkbox" name="flag_2" id="flag_2" />
                     </div>
                 </div>
-                
+
                 <div className="arrow-nav">
-                <button id='previous' type="button" value="previous">Previous</button>
-                <button id='next' type="button" value="next">Next</button>
+                    <button id='previous' type="button" value="previous">Previous</button>
+                    <button id='next' type="button" value="next">Next</button>
                 </div>
             </div>
+        );
+    }
+}
+
+class App extends React.Component {
+    constructor(props){
+        super(props);
+    }
+    render(){
+
+        return (
+            <div className="App">
+                <TopBar questionBank={this.props.questionBank}/>
+                <QuestionBar />
+                <BottomBar />
             </div>
         );
-        }
     }
+}
 
 export default App;
