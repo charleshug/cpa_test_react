@@ -137,11 +137,13 @@ class FlagButton extends React.Component{
 }
 
 class BottomBar extends React.Component{
-    constructor(props){
-        super(props);
-    }
-
     render(){
+        const flags = [];
+        this.props.questionBank.forEach((questionItem, index) => {
+            flags.push(
+                <FlagButton number={ (index+1) } key={questionItem.question} />
+            );
+        });
         
         return(
             <div className="bottom-bar">
@@ -153,8 +155,7 @@ class BottomBar extends React.Component{
                 </div>
 
                 <div className="flag-buttons">
-                    <FlagButton number={1} />
-                    <FlagButton number={2} />
+                    {flags}
                 </div>
 
                 <div className="arrow-nav">
