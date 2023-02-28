@@ -2,6 +2,30 @@ import React from 'react';
 import Timer from './timer';
 import './App.css';
 
+class TopBar extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {time: 30};
+    }
+
+    render(){
+        const questionBank = this.props.questionBank;
+        return(
+            <div className="top-bar">
+                <h1>CPA</h1>
+
+                <p id='title-box'>Financial Accounting and Reporting</p>
+
+                <div id='stats-box'>
+                    <Timer time={this.state.time} />
+                    <p id="displayScore">Score 0 / {questionBank.length}</p>
+                </div>
+
+                <button id='exit-button'>Quit</button>
+            </div>
+        );
+    }
+}
 
 class App extends React.Component {
     constructor(props){
@@ -12,18 +36,7 @@ class App extends React.Component {
 
         return (
             <div className="App">
-            <div className="top-bar">
-                <h1>CPA</h1>
-                
-                <p id='title-box'>Financial Accounting and Reporting</p>
-
-                <div id='stats-box'>
-                <Timer time={this.state.time} />
-                <p id="displayScore">Score: 0 / 5</p>
-                </div>
-
-                <button id='exit-button'>Quit</button>
-            </div>
+            <TopBar questionBank={this.props.questionBank}/>
 
             <div className="question-area">
                 <div className="question active">
