@@ -27,55 +27,66 @@ class TopBar extends React.Component{
     }
 }
 
-class QuestionBar extends React.Component{
-    constructor(props){
-        super(props);
-    }
+class QuestionItem extends React.Component {
     render(){
+        const questionNum = this.props.questionNum;
+        const questionText = this.props.questionItem.question;
+        const questionHint = this.props.questionItem.hint;
+        const questionExplanation = this.props.questionItem.explanation;
+
         return(
-            <div className="question-area">
-                <div className="question active">
-                    <div className="question-number">
-                        <h2>Question 1</h2>
+            <div className="question active">
+                <div className="question-number">
+                    <h2>Question {questionNum}</h2>
+                </div>
+                <div className="question-text">
+                    <p>{questionText}</p>
+                </div>
+                <div className="radio-btn-answers">
+                    <div>
+                        <label>
+                            <input type="radio" name="answer_group0" />
+                            The need for conservatism.
+                        </label>
                     </div>
-                    <div className="question-text">
-                        <p>According to the FASB conceptual framework, the objectives of financial reporting for business enterprises are based on</p>
+                    <div>
+                        <label>
+                            <input type="radio" name="answer_group0" />
+                            Generally accepted accounting principles.
+                        </label>
                     </div>
-                    <div className="radio-btn-answers">
-                        <div>
-                            <label>
-                                <input type="radio" name="answer_group0" />
-                                The need for conservatism.
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input type="radio" name="answer_group0" />
-                                Generally accepted accounting principles.
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input type="radio" name="answer_group0" />
-                                Reporting for regulators.
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input type="radio" name="answer_group0" />
-                                The needs of the users of the information.
-                            </label>
-                        </div>
+                    <div>
+                        <label>
+                            <input type="radio" name="answer_group0" />
+                            Reporting for regulators.
+                        </label>
                     </div>
-                    <div className="hint">
-                        <h3>Hint:</h3>
-                        <p>Financial reporting is for the users</p>
-                    </div>
-                    <div className="explanation">
-                        <h3>Explanation</h3>
-                        <p>(d) Per SFAC 8, the objectives of financial reporting focus on providing present and potential investors and creditors with information useful in making investment decisions. Financial statement users do not have the authority to prescribe the data they desire. Therefore, they must rely on external financial reporting to satisfy their information needs, and the objectives must be based on the needs of those users.</p>
+                    <div>
+                        <label>
+                            <input type="radio" name="answer_group0" />
+                            The needs of the users of the information.
+                        </label>
                     </div>
                 </div>
+                <div className="hint">
+                    <h3>Hint:</h3>
+                    <p>{questionHint}</p>
+                </div>
+                <div className="explanation">
+                    <h3>Explanation</h3>
+                    <p>{questionExplanation}</p>
+                </div>
+            </div>
+        );
+    }
+}
+
+class QuestionBar extends React.Component{
+    render(){
+        //console.log(this.props.questionBank[0]);
+        return(
+            <div className="question-area">
+                <QuestionItem questionItem={this.props.questionBank[0]} questionNum={1} />
                 <div className="question">
                     <div className="question-number">
                         <h2>Question 2</h2>
@@ -168,15 +179,12 @@ class BottomBar extends React.Component{
 }
 
 class App extends React.Component {
-    constructor(props){
-        super(props);
-    }
     render(){
 
         return (
             <div className="App">
                 <TopBar questionBank={this.props.questionBank}/>
-                <QuestionBar />
+                <QuestionBar questionBank={this.props.questionBank} />
                 <BottomBar questionBank={this.props.questionBank} />
             </div>
         );
