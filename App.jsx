@@ -50,6 +50,14 @@ class QuestionItem extends React.Component {
         const questionHint = this.props.questionItem.hint;
         const questionExplanation = this.props.questionItem.explanation;
         const answerGroupNum = this.props.questionNum-1;
+        const answerChoices = this.props.questionItem.choices;
+
+        const answerItems = [];
+        answerChoices.forEach((answerChoice, index) => {
+            answerItems.push(
+                <AnswerItem answerItem={answerChoice} answerGroupNum={answerGroupNum} key={answerChoice.choice} />
+            );
+        });
 
         return(
             <div className="question active">
@@ -60,25 +68,7 @@ class QuestionItem extends React.Component {
                     <p>{questionText}</p>
                 </div>
                 <div className="radio-btn-answers">
-                    <AnswerItem answerItem={this.props.questionItem.choices[0]} answerGroupNum={answerGroupNum} />
-                    <div>
-                        <label>
-                            <input type="radio" name={"answer_group" + answerGroupNum} />
-                            Generally accepted accounting principles.
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <input type="radio" name={"answer_group" + answerGroupNum} />
-                            Reporting for regulators.
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <input type="radio" name={"answer_group" + answerGroupNum} />
-                            The needs of the users of the information.
-                        </label>
-                    </div>
+                    {answerItems}
                 </div>
                 <div className="hint">
                     <h3>Hint:</h3>
