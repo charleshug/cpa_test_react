@@ -33,6 +33,7 @@ class QuestionItem extends React.Component {
         const questionText = this.props.questionItem.question;
         const questionHint = this.props.questionItem.hint;
         const questionExplanation = this.props.questionItem.explanation;
+        const answerGroupNum = this.props.questionNum-1;
 
         return(
             <div className="question active">
@@ -45,25 +46,25 @@ class QuestionItem extends React.Component {
                 <div className="radio-btn-answers">
                     <div>
                         <label>
-                            <input type="radio" name="answer_group0" />
+                            <input type="radio" name={"answer_group" + answerGroupNum } />
                             The need for conservatism.
                         </label>
                     </div>
                     <div>
                         <label>
-                            <input type="radio" name="answer_group0" />
+                            <input type="radio" name={"answer_group" + answerGroupNum} />
                             Generally accepted accounting principles.
                         </label>
                     </div>
                     <div>
                         <label>
-                            <input type="radio" name="answer_group0" />
+                            <input type="radio" name={"answer_group" + answerGroupNum} />
                             Reporting for regulators.
                         </label>
                     </div>
                     <div>
                         <label>
-                            <input type="radio" name="answer_group0" />
+                            <input type="radio" name={"answer_group" + answerGroupNum} />
                             The needs of the users of the information.
                         </label>
                     </div>
