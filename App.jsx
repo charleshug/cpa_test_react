@@ -27,6 +27,22 @@ class TopBar extends React.Component{
     }
 }
 
+class AnswerItem extends React.Component {
+    render(){
+        const answerItem = this.props.answerItem.choice;
+        const answerGroupNum = this.props.answerGroupNum;
+
+        return(
+            <div>
+                <label>
+                    <input type="radio" name={"answer_group" + answerGroupNum} />
+                    {answerItem}
+                </label>
+            </div>
+        );
+    }
+}
+
 class QuestionItem extends React.Component {
     render(){
         const questionNum = this.props.questionNum;
@@ -44,12 +60,7 @@ class QuestionItem extends React.Component {
                     <p>{questionText}</p>
                 </div>
                 <div className="radio-btn-answers">
-                    <div>
-                        <label>
-                            <input type="radio" name={"answer_group" + answerGroupNum } />
-                            The need for conservatism.
-                        </label>
-                    </div>
+                    <AnswerItem answerItem={this.props.questionItem.choices[0]} answerGroupNum={answerGroupNum} />
                     <div>
                         <label>
                             <input type="radio" name={"answer_group" + answerGroupNum} />
