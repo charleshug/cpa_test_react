@@ -106,12 +106,27 @@ class QuestionBar extends React.Component{
 }
 
 class FlagButton extends React.Component{
+
+    constructor(props) {
+        super(props);
+        this.handleButton = this.handleButton.bind(this);
+    }
+
+    handleButton(e) {
+        this.props.onButtonClick(e);
+    }
+
     render(){
         const number = this.props.number
         return(
             <div>
-                <button className="question-button" value={number}>{number}</button>
-                <input type="checkbox" name={"flag_" + number} id={"flag_"+ number} />
+                <input type="button"
+                       className="question-button"
+                       value={number}
+                       onClick={this.handleButton} />
+                <input type="checkbox"
+                       name={"flag_" + number}
+                       id={"flag_"+ number} />
             </div>
         );
     }
@@ -132,7 +147,9 @@ class BottomBar extends React.Component{
         const flags = [];
         this.props.questionBank.forEach((questionItem, index) => {
             flags.push(
-                <FlagButton number={ (index+1) } key={questionItem.question} />
+                <FlagButton number={ (index+1) }
+                            key={questionItem.question}
+                            onButtonClick={this.handleButton} />
             );
         });
         
@@ -183,7 +200,7 @@ class App extends React.Component {
                 this.state.currentQuestionIndex >= (this.props.questionBank.length - 1) ? newQuestionIndex = 0 : newQuestionIndex++;
                 break;
             default:
-                //TODO numbered button navigation
+                newQuestionIndex = targetValue -1;
         }
         this.setState({
             currentQuestionIndex: newQuestionIndex
