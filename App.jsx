@@ -60,6 +60,7 @@ class QuestionItem extends React.Component {
         });
 
         return(
+            //className="active" only for the first question
             <div className="question active">
                 <div className="question-number">
                     <h2>Question {questionNum}</h2>
@@ -85,53 +86,16 @@ class QuestionItem extends React.Component {
 
 class QuestionBar extends React.Component{
     render(){
-        //console.log(this.props.questionBank[0]);
+        const questionItems = [];
+        this.props.questionBank.forEach((question, index) => {
+            questionItems.push(
+                <QuestionItem questionItem={question} questionNum={index+1} key={question.question} />
+            );
+        });
+
         return(
             <div className="question-area">
-                <QuestionItem questionItem={this.props.questionBank[0]} questionNum={1} />
-                <div className="question">
-                    <div className="question-number">
-                        <h2>Question 2</h2>
-                    </div>
-                    <div className="question-text">
-                        <p>According to Statements of Financial Accounting Concepts, neutrality is an ingredient of: Faithful representation | Relevance</p>
-                    </div>
-                    <div className="radio-btn-answers">
-                        <div>
-                            <label>
-                                <input type="radio" name="answer_group0" />
-                                YES | YES
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input type="radio" name="answer_group0" />
-                                NO | YES
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input type="radio" name="answer_group0" />
-                                YES | NO
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input type="radio" name="answer_group0" />
-                                NO | NO
-                            </label>
-                        </div>
-                    </div>
-                    <div className="hint">
-                        <h3>Hint:</h3>
-                        <p>neutral info is free from bias, unbiased info is more reliable; unbiased info is not ALWAYS relevant; relevance is for usefulness</p>
-                    </div>
-                    <div className="explanation">
-                        <h3>Explanation</h3>
-                        <p>(b) SFAC 8 defines neutrality as the quality of information which requires freedom from bias toward a predetermined result. Unbiased information would always be more faithfully represented than biased information. Other components of faithful representation include information to be verifiable and free from error. Neutrality is not an ingredient of relevance because relevance requires information to have predictive value and confirmatory value, or both.</p>
-                    </div>
-                </div>
-
+                {questionItems}
             </div>
         );
     }
