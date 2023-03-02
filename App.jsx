@@ -43,6 +43,14 @@ class AnswerItem extends React.Component {
     }
 }
 
+class HintItem extends React.Component{
+    render(){
+        return(
+            <p>{this.props.hintText}</p>
+        );
+    }
+}
+
 class QuestionItem extends React.Component {
     constructor(props){
         super(props);
@@ -62,7 +70,7 @@ class QuestionItem extends React.Component {
         const questionExplanation = this.props.questionItem.explanation;
         const answerGroupNum = this.props.questionNum-1;
         const answerChoices = this.props.questionItem.choices;
-        //var isHintVisible = this.state.isHintVisible;
+        var isHintVisible = this.state.isHintVisible;
 
         const answerItems = [];
         answerChoices.forEach((answerChoice, index) => {
@@ -71,9 +79,11 @@ class QuestionItem extends React.Component {
             );
         });
 
-        var questionHint = '';
-        if (this.state.isHintVisible) {
-            questionHint = this.props.questionItem.hint;
+        var questionHint = [];
+        if (isHintVisible) {
+            questionHint.push(
+                <HintItem hintText={this.props.questionItem.hint} />
+            );
         }
 
         return(
@@ -92,7 +102,7 @@ class QuestionItem extends React.Component {
                     <input type="button"
                            value="Hint"
                            onClick={this.handleHintButton} />
-                    <p>{questionHint}</p>
+                    {questionHint}
                 </div>
                 <div className="explanation">
                     <h3>Explanation</h3>
