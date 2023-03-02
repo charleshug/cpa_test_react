@@ -17,10 +17,6 @@ button {
   justify-content: space-between;
 }
 
-.hidden{
-  display:none;
-}
-
 .question-area{
   flex: 3;
   padding: 2rem;
@@ -29,14 +25,9 @@ button {
 
 .question{
   height:  400px;
-  display: none;
-
-}
-
-.question.active {
-  display: block;
   overflow: scroll;
 }
+
 
 .bottom-bar {
   flex: 1;
