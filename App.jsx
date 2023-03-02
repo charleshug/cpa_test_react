@@ -86,16 +86,21 @@ class QuestionItem extends React.Component {
 
 class QuestionBar extends React.Component{
     render(){
-        const questionItems = [];
-        this.props.questionBank.forEach((question, index) => {
-            questionItems.push(
-                <QuestionItem questionItem={question} questionNum={index+1} key={question.question} />
-            );
-        });
+        const currentQuestionIndex = this.props.currentQuestionIndex;
+        const question = this.props.questionBank[currentQuestionIndex];
+
+        // const questionItems = [];
+        // this.props.questionBank.forEach((question, index) => {
+        //     questionItems.push(
+        //         <QuestionItem questionItem={question} questionNum={index+1} key={question.question} />
+        //     );
+        // });
+
+        //{questionItems}
 
         return(
             <div className="question-area">
-                {questionItems}
+                <QuestionItem questionItem={question} questionNum={currentQuestionIndex + 1} />
             </div>
         );
     }
@@ -114,6 +119,16 @@ class FlagButton extends React.Component{
 }
 
 class BottomBar extends React.Component{
+
+    constructor(props){
+        super(props);
+        this.handleButton = this.handleButton.bind(this);
+    }
+
+    handleButton(e){
+        this.props.onButtonClick(e.target.value);
+    }
+
     render(){
         const flags = [];
         this.props.questionBank.forEach((questionItem, index) => {
@@ -136,8 +151,14 @@ class BottomBar extends React.Component{
                 </div>
 
                 <div className="arrow-nav">
-                    <button id='previous' type="button" value="previous">Previous</button>
-                    <button id='next' type="button" value="next">Next</button>
+                    <input id='Previous' 
+                            type="button"
+                            value="Previous"
+                            onClick={this.handleButton} />
+                    <input id='Next'
+                            type="button"
+                            value="Next"
+                            onClick={this.handleButton} />
                 </div>
             </div>
         );
@@ -145,13 +166,40 @@ class BottomBar extends React.Component{
 }
 
 class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            currentQuestionIndex: 0,
+        };
+        this.handleButton = this.handleButton.bind(this);
+    }
+
+    handleButton(targetValue){
+        let newQuestionIndex = this.state.currentQuestionIndex;
+        switch(targetValue){
+            case "Previous":
+                this.state.currentQuestionIndex <= 0 ? newQuestionIndex = (this.props.questionBank.length - 1) : newQuestionIndex--;
+                break;
+            case "Next":
+                this.state.currentQuestionIndex >= (this.props.questionBank.length - 1) ? newQuestionIndex = 0 : newQuestionIndex++;
+                break;
+            default:
+                //TODO numbered button navigation
+        }
+        this.setState({
+            currentQuestionIndex: newQuestionIndex
+        });
+    }
+
     render(){
 
         return (
             <div className="App">
                 <TopBar questionBank={this.props.questionBank}/>
-                <QuestionBar questionBank={this.props.questionBank} />
-                <BottomBar questionBank={this.props.questionBank} />
+                <QuestionBar questionBank={this.props.questionBank} 
+                             currentQuestionIndex={this.state.currentQuestionIndex} />
+                <BottomBar questionBank={this.props.questionBank} 
+                           onButtonClick={this.handleButton} />
             </div>
         );
     }
