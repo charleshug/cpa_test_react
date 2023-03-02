@@ -28,14 +28,29 @@ class TopBar extends React.Component{
 }
 
 class AnswerItem extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleAnswerChoiceChange = this.handleAnswerChoiceChange.bind(this);
+
+    }
+
+    handleAnswerChoiceChange(e){
+        this.props.handleAnswerChoiceChange(e);
+    }
+
     render(){
         const answerItem = this.props.answerItem.choice;
-        const answerGroupNum = this.props.answerGroupNum;
+        const currentQuestionIndex = this.props.currentQuestionIndex;
+        const isChecked = this.props.answerItem.choice == this.props.answerChoices[this.props.currentQuestionIndex];
 
         return(
             <div>
                 <label>
-                    <input type="radio" name={"answer_group" + answerGroupNum} />
+                    <input type="radio"
+                            name={"answer_group" + currentQuestionIndex}
+                            value={answerItem}
+                            checked={isChecked} 
+                            onChange={this.handleAnswerChoiceChange} />
                     {answerItem}
                 </label>
             </div>
@@ -58,31 +73,41 @@ class QuestionItem extends React.Component {
             isHintVisible: false,
         }
         this.handleHintButton = this.handleHintButton.bind(this);
+        this.handleAnswerChoiceChange = this.handleAnswerChoiceChange.bind(this);
     }
 
     handleHintButton() {
         this.setState({ isHintVisible: !this.state.isHintVisible });
     }
 
+    handleAnswerChoiceChange(e){
+        this.props.handleAnswerChoiceChange(e);
+    }
+
     render(){
-        const questionNum = this.props.questionNum;
+        const questionNum = this.props.currentQuestionIndex+1;
         const questionText = this.props.questionItem.question;
         const questionExplanation = this.props.questionItem.explanation;
-        const answerGroupNum = this.props.questionNum-1;
+        const currentQuestionIndex = this.props.currentQuestionIndex;
         const answerChoices = this.props.questionItem.choices;
         var isHintVisible = this.state.isHintVisible;
 
         const answerItems = [];
         answerChoices.forEach((answerChoice, index) => {
             answerItems.push(
-                <AnswerItem answerItem={answerChoice} answerGroupNum={answerGroupNum} key={answerChoice.choice} />
+                <AnswerItem answerItem={answerChoice}
+                            currentQuestionIndex={currentQuestionIndex}
+                            answerChoices={this.props.answerChoices}
+                            key={answerChoice.choice} 
+                            handleAnswerChoiceChange={this.handleAnswerChoiceChange} />
             );
         });
 
         var questionHint = [];
         if (isHintVisible) {
             questionHint.push(
-                <HintItem hintText={this.props.questionItem.hint} />
+                <HintItem hintText={this.props.questionItem.hint}
+                            key={this.props.questionItem.hint} />
             );
         }
 
@@ -114,6 +139,16 @@ class QuestionItem extends React.Component {
 }
 
 class QuestionBar extends React.Component{
+
+    constructor(props){
+        super(props);
+        this.handleAnswerChoiceChange = this.handleAnswerChoiceChange.bind(this);
+    }
+
+    handleAnswerChoiceChange(e){
+        this.props.handleAnswerChoiceChange(e);
+    }
+
     render(){
         const currentQuestionIndex = this.props.currentQuestionIndex;
         const question = this.props.questionBank[currentQuestionIndex];
@@ -129,7 +164,10 @@ class QuestionBar extends React.Component{
 
         return(
             <div className="question-area">
-                <QuestionItem questionItem={question} questionNum={currentQuestionIndex + 1} />
+                <QuestionItem questionItem={question}
+                              currentQuestionIndex={currentQuestionIndex} 
+                              answerChoices={this.props.answerChoices}
+                              handleAnswerChoiceChange={this.handleAnswerChoiceChange} />
             </div>
         );
     }
@@ -216,9 +254,21 @@ class App extends React.Component {
         super(props);
         this.state = {
             currentQuestionIndex: 0,
+            answerChoices: [],
         };
         this.handleButton = this.handleButton.bind(this);
+        this.handleAnswerChoiceChange = this.handleAnswerChoiceChange.bind(this);
     }
+
+    handleAnswerChoiceChange(e){
+        const newAnswer = e.target.value;
+        const newAnswerChoices = this.state.answerChoices;
+        newAnswerChoices[this.state.currentQuestionIndex] = newAnswer;
+        this.setState({
+            answerChoices: newAnswerChoices,
+        });
+    }
+
 
     handleButton(targetValue){
         let newQuestionIndex = this.state.currentQuestionIndex;
@@ -243,7 +293,9 @@ class App extends React.Component {
             <div className="App">
                 <TopBar questionBank={this.props.questionBank}/>
                 <QuestionBar questionBank={this.props.questionBank} 
-                             currentQuestionIndex={this.state.currentQuestionIndex} />
+                             currentQuestionIndex={this.state.currentQuestionIndex}
+                             answerChoices={this.state.answerChoices}
+                             handleAnswerChoiceChange={this.handleAnswerChoiceChange} />
                 <BottomBar questionBank={this.props.questionBank} 
                            onButtonClick={this.handleButton} />
             </div>
