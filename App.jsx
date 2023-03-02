@@ -60,7 +60,6 @@ class QuestionItem extends React.Component {
         });
 
         return(
-            //className="active" only for the first question
             <div className="question ">
                 <div className="question-number">
                     <h2>Question {questionNum}</h2>
