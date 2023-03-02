@@ -44,13 +44,25 @@ class AnswerItem extends React.Component {
 }
 
 class QuestionItem extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            isHintVisible: false,
+        }
+        this.handleHintButton = this.handleHintButton.bind(this);
+    }
+
+    handleHintButton() {
+        this.setState({ isHintVisible: !this.state.isHintVisible });
+    }
+
     render(){
         const questionNum = this.props.questionNum;
         const questionText = this.props.questionItem.question;
-        const questionHint = this.props.questionItem.hint;
         const questionExplanation = this.props.questionItem.explanation;
         const answerGroupNum = this.props.questionNum-1;
         const answerChoices = this.props.questionItem.choices;
+        //var isHintVisible = this.state.isHintVisible;
 
         const answerItems = [];
         answerChoices.forEach((answerChoice, index) => {
@@ -58,6 +70,11 @@ class QuestionItem extends React.Component {
                 <AnswerItem answerItem={answerChoice} answerGroupNum={answerGroupNum} key={answerChoice.choice} />
             );
         });
+
+        var questionHint = '';
+        if (this.state.isHintVisible) {
+            questionHint = this.props.questionItem.hint;
+        }
 
         return(
             <div className="question ">
@@ -70,8 +87,11 @@ class QuestionItem extends React.Component {
                 <div className="radio-btn-answers">
                     {answerItems}
                 </div>
+                <br />
                 <div className="hint">
-                    <h3>Hint:</h3>
+                    <input type="button"
+                           value="Hint"
+                           onClick={this.handleHintButton} />
                     <p>{questionHint}</p>
                 </div>
                 <div className="explanation">
