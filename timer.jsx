@@ -25,6 +25,7 @@ class Timer extends React.Component{
             this.setState({timeMessage: "Done" });
             this.setState({time: 0})
             clearInterval(this.intervalId);
+            this.props.endGame();
             //gradeForm()
         }
     }

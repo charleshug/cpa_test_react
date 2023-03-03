@@ -22,7 +22,7 @@ class TopBar extends React.Component{
                 <p id='title-box'>Financial Accounting and Reporting</p>
 
                 <div id='stats-box'>
-                    <Timer time={this.state.time} />
+                    <Timer time={this.state.time} endGame={this.props.endGame} />
                     <p id="displayScore">Score 0 / {questionBank.length}</p>
                 </div>
 
@@ -119,6 +119,16 @@ class QuestionItem extends React.Component {
             );
         }
 
+        var questionExplanationDisplay = [];
+        if (this.props.showExplanation) {
+            questionExplanationDisplay.push(
+                <div className="explanation">
+                    <h3>Explanation</h3>
+                    <p>{questionExplanation}</p>
+                </div>
+            )
+        }
+
         return(
             <div className="question ">
                 <div className="question-number">
@@ -137,10 +147,7 @@ class QuestionItem extends React.Component {
                            onClick={this.handleHintButton} />
                     {questionHint}
                 </div>
-                <div className="explanation">
-                    <h3>Explanation</h3>
-                    <p>{questionExplanation}</p>
-                </div>
+                {questionExplanationDisplay}
             </div>
         );
     }
@@ -175,7 +182,8 @@ class QuestionBar extends React.Component{
                 <QuestionItem questionItem={question}
                               currentQuestionIndex={currentQuestionIndex} 
                               answerChoices={this.props.answerChoices}
-                              handleAnswerChoiceChange={this.handleAnswerChoiceChange} />
+                              handleAnswerChoiceChange={this.handleAnswerChoiceChange}
+                              showExplanation={this.props.showExplanation} />
             </div>
         );
     }
@@ -263,21 +271,49 @@ class App extends React.Component {
         this.state = {
             currentQuestionIndex: 0,
             answerChoices: [],
+            showExplanation: false,
         };
         this.handleButton = this.handleButton.bind(this);
         this.handleQuitButton = this.handleQuitButton.bind(this);
         this.handleAnswerChoiceChange = this.handleAnswerChoiceChange.bind(this);
+        this.endGame = this.endGame.bind(this);
     }
 
     handleQuitButton(){
-        console.log("App Bar: Quit Button pressed")
+        this.endGame();
+    }
+
+    endGame(){
+        this.setState({ showExplanation: true });
         //check reminder flags
         //end game
         //stopTimer
         //gradeForm
         //display score
         //display explanation text
+        const correctAnswers = this.getArrayOfCorrectAnswers();
+
+        correctAnswers.forEach((answer, index) => {
+            if (answer == this.state.answerChoices[index]) {
+                console.log("Question " + index + ": correct")
+            } else {
+                console.log("Question " + index + ": incorrect")
+            }
+        });
     }
+
+    getArrayOfCorrectAnswers(){
+        const correctAnswers = [];
+        this.props.questionBank.forEach(question => {
+            question.choices.forEach(choice => {
+                if (choice.value == 'true'){
+                    correctAnswers.push(choice.choice)
+                };
+            });
+        });
+        return correctAnswers;
+    }
+
 
     handleAnswerChoiceChange(e){
         const newAnswer = e.target.value;
@@ -311,11 +347,13 @@ class App extends React.Component {
         return (
             <div className="App">
                 <TopBar questionBank={this.props.questionBank}
-                        handleQuitButton={this.handleQuitButton} />
+                        handleQuitButton={this.handleQuitButton} 
+                        endGame={this.endGame} />
                 <QuestionBar questionBank={this.props.questionBank} 
                              currentQuestionIndex={this.state.currentQuestionIndex}
                              answerChoices={this.state.answerChoices}
-                             handleAnswerChoiceChange={this.handleAnswerChoiceChange} />
+                             handleAnswerChoiceChange={this.handleAnswerChoiceChange}
+                             showExplanation={this.state.showExplanation} />
                 <BottomBar questionBank={this.props.questionBank} 
                            onButtonClick={this.handleButton} />
             </div>
