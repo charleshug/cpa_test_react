@@ -194,16 +194,7 @@ class QuestionBar extends React.Component{
     render(){
         const currentQuestionIndex = this.props.currentQuestionIndex;
         const question = this.props.questionBank[currentQuestionIndex];
-
-        // const questionItems = [];
-        // this.props.questionBank.forEach((question, index) => {
-        //     questionItems.push(
-        //         <QuestionItem questionItem={question} questionNum={index+1} key={question.question} />
-        //     );
-        // });
-
-        //{questionItems}
-
+        
         return(
             <div className="question-area">
                 <QuestionItem questionItem={question}
