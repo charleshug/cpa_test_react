@@ -6,6 +6,11 @@ class TopBar extends React.Component{
     constructor(props){
         super(props);
         this.state = {time: 30};
+        this.handleQuitButton = this.handleQuitButton.bind(this);
+    }
+
+    handleQuitButton(){
+        this.props.handleQuitButton();
     }
 
     render(){
@@ -21,7 +26,10 @@ class TopBar extends React.Component{
                     <p id="displayScore">Score 0 / {questionBank.length}</p>
                 </div>
 
-                <button id='exit-button'>Quit</button>
+                <input type='button'
+                        id='exit-button'
+                        value='Quit'
+                        onClick={this.handleQuitButton} />
             </div>
         );
     }
@@ -257,7 +265,18 @@ class App extends React.Component {
             answerChoices: [],
         };
         this.handleButton = this.handleButton.bind(this);
+        this.handleQuitButton = this.handleQuitButton.bind(this);
         this.handleAnswerChoiceChange = this.handleAnswerChoiceChange.bind(this);
+    }
+
+    handleQuitButton(){
+        console.log("App Bar: Quit Button pressed")
+        //check reminder flags
+        //end game
+        //stopTimer
+        //gradeForm
+        //display score
+        //display explanation text
     }
 
     handleAnswerChoiceChange(e){
@@ -291,7 +310,8 @@ class App extends React.Component {
 
         return (
             <div className="App">
-                <TopBar questionBank={this.props.questionBank}/>
+                <TopBar questionBank={this.props.questionBank}
+                        handleQuitButton={this.handleQuitButton} />
                 <QuestionBar questionBank={this.props.questionBank} 
                              currentQuestionIndex={this.state.currentQuestionIndex}
                              answerChoices={this.state.answerChoices}
