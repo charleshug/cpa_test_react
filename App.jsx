@@ -42,11 +42,26 @@ class AnswerItem extends React.Component {
     constructor(props){
         super(props);
         this.handleAnswerChoiceChange = this.handleAnswerChoiceChange.bind(this);
-
     }
 
     handleAnswerChoiceChange(e){
         this.props.handleAnswerChoiceChange(e);
+    }
+
+    setBackGroundColorClassName(){
+        let backgroundColorClassName = '';
+        switch(this.props.gradedStatus){
+            case 'correct':
+                backgroundColorClassName='correct-answer'
+                break;
+            case 'wrong':
+                backgroundColorClassName = 'wrong-answer'
+                break;
+            case 'missed':
+                backgroundColorClassName = 'missed-answer'
+                break;
+        }
+        return backgroundColorClassName;
     }
 
     render(){
@@ -54,8 +69,11 @@ class AnswerItem extends React.Component {
         const currentQuestionIndex = this.props.currentQuestionIndex;
         const isChecked = this.props.answerItem.choice == this.props.answerChoices[this.props.currentQuestionIndex];
 
+        const backgroundColorClassName = this.setBackGroundColorClassName();
+
         return(
-            <div>
+            <div
+                className={backgroundColorClassName}>
                 <label>
                     <input type="radio"
                             name={"answer_group" + currentQuestionIndex}
@@ -113,6 +131,7 @@ class QuestionItem extends React.Component {
                             key={answerChoice.choice} 
                             handleAnswerChoiceChange={this.handleAnswerChoiceChange} 
                             gameIsOver={this.props.gameIsOver}
+                            gradedStatus={''}
                             />
             );
         });
