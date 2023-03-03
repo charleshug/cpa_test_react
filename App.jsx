@@ -61,6 +61,7 @@ class AnswerItem extends React.Component {
                             name={"answer_group" + currentQuestionIndex}
                             value={answerItem}
                             checked={isChecked} 
+                            disabled={this.props.gameIsOver}
                             onChange={this.handleAnswerChoiceChange} />
                     {answerItem}
                 </label>
@@ -110,7 +111,9 @@ class QuestionItem extends React.Component {
                             currentQuestionIndex={currentQuestionIndex}
                             answerChoices={this.props.answerChoices}
                             key={answerChoice.choice} 
-                            handleAnswerChoiceChange={this.handleAnswerChoiceChange} />
+                            handleAnswerChoiceChange={this.handleAnswerChoiceChange} 
+                            gameIsOver={this.props.gameIsOver}
+                            />
             );
         });
 
