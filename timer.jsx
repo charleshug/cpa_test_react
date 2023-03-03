@@ -18,9 +18,14 @@ class Timer extends React.Component{
     }
   
     tick() {
-        if (this.state.time > 0) {
-            this.setState({time: this.state.time - 1});
-            this.setState({timeMessage: "Time: " });
+        if (this.props.gameIsOver) {
+            this.setState({ timeMessage: "Done" });
+            this.setState({ time: 0 })
+            clearInterval(this.intervalId);
+            this.props.endGame();
+        } else if(this.state.time > 0) {
+            this.setState({ time: this.state.time - 1 });
+            this.setState({ timeMessage: "Time: " }); 
         } else {
             this.setState({timeMessage: "Done" });
             this.setState({time: 0})

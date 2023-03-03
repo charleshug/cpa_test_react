@@ -22,7 +22,10 @@ class TopBar extends React.Component{
                 <p id='title-box'>Financial Accounting and Reporting</p>
 
                 <div id='stats-box'>
-                    <Timer time={this.state.time} endGame={this.props.endGame} />
+                    <Timer time={this.state.time} 
+                            endGame={this.props.endGame}
+                            gameIsOver={this.props.gameIsOver}
+                            />
                     <p id="displayScore">Score 0 / {questionBank.length}</p>
                 </div>
 
@@ -348,7 +351,9 @@ class App extends React.Component {
             <div className="App">
                 <TopBar questionBank={this.props.questionBank}
                         handleQuitButton={this.handleQuitButton} 
-                        endGame={this.endGame} />
+                        endGame={this.endGame} 
+                        gameIsOver={this.state.gameIsOver}
+                        />
                 <QuestionBar questionBank={this.props.questionBank} 
                              currentQuestionIndex={this.state.currentQuestionIndex}
                              answerChoices={this.state.answerChoices}
