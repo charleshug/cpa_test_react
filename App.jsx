@@ -120,7 +120,7 @@ class QuestionItem extends React.Component {
         }
 
         var questionExplanationDisplay = [];
-        if (this.props.showExplanation) {
+        if (this.props.gameIsOver) {
             questionExplanationDisplay.push(
                 <div className="explanation">
                     <h3>Explanation</h3>
@@ -183,7 +183,7 @@ class QuestionBar extends React.Component{
                               currentQuestionIndex={currentQuestionIndex} 
                               answerChoices={this.props.answerChoices}
                               handleAnswerChoiceChange={this.handleAnswerChoiceChange}
-                              showExplanation={this.props.showExplanation} />
+                              gameIsOver={this.props.gameIsOver} />
             </div>
         );
     }
@@ -271,7 +271,7 @@ class App extends React.Component {
         this.state = {
             currentQuestionIndex: 0,
             answerChoices: [],
-            showExplanation: false,
+            gameIsOver: false,
         };
         this.handleButton = this.handleButton.bind(this);
         this.handleQuitButton = this.handleQuitButton.bind(this);
@@ -284,7 +284,7 @@ class App extends React.Component {
     }
 
     endGame(){
-        this.setState({ showExplanation: true });
+        this.setState({ gameIsOver: true });
         //check reminder flags
         //end game
         //stopTimer
@@ -353,7 +353,7 @@ class App extends React.Component {
                              currentQuestionIndex={this.state.currentQuestionIndex}
                              answerChoices={this.state.answerChoices}
                              handleAnswerChoiceChange={this.handleAnswerChoiceChange}
-                             showExplanation={this.state.showExplanation} />
+                             gameIsOver={this.state.gameIsOver} />
                 <BottomBar questionBank={this.props.questionBank} 
                            onButtonClick={this.handleButton} />
             </div>
