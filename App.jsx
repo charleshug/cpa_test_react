@@ -48,7 +48,7 @@ class AnswerItem extends React.Component {
         this.props.handleAnswerChoiceChange(e);
     }
 
-    setBackGroundColorClassName(){
+    setBackgroundColorClassName(){
         let backgroundColorClassName = '';
         switch(this.props.answerChoicesGradedStatus){
             case 'correct-answer':
@@ -69,7 +69,7 @@ class AnswerItem extends React.Component {
         const currentQuestionIndex = this.props.currentQuestionIndex;
         const isChecked = this.props.answerItem.choice == this.props.answerChoices[this.props.currentQuestionIndex];
 
-        const backgroundColorClassName = this.setBackGroundColorClassName();
+        const backgroundColorClassName = this.setBackgroundColorClassName();
 
         return(
             <div
