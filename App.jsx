@@ -50,14 +50,14 @@ class AnswerItem extends React.Component {
 
     setBackGroundColorClassName(){
         let backgroundColorClassName = '';
-        switch(this.props.gradedStatus){
-            case 'correct':
+        switch(this.props.answerChoicesGradedStatus){
+            case 'correct-answer':
                 backgroundColorClassName='correct-answer'
                 break;
-            case 'wrong':
+            case 'wrong-answer':
                 backgroundColorClassName = 'wrong-answer'
                 break;
-            case 'missed':
+            case 'missed-answer':
                 backgroundColorClassName = 'missed-answer'
                 break;
         }
@@ -120,6 +120,7 @@ class QuestionItem extends React.Component {
         const questionExplanation = this.props.questionItem.explanation;
         const currentQuestionIndex = this.props.currentQuestionIndex;
         const answerChoices = this.props.questionItem.choices;
+        const answerChoicesGradedStatus = this.props.answerChoicesGradedStatus[currentQuestionIndex];
         var isHintVisible = this.state.isHintVisible;
 
         const answerItems = [];
@@ -128,6 +129,7 @@ class QuestionItem extends React.Component {
                 <AnswerItem answerItem={answerChoice}
                             currentQuestionIndex={currentQuestionIndex}
                             answerChoices={this.props.answerChoices}
+                            answerChoicesGradedStatus={answerChoicesGradedStatus[index]}
                             key={answerChoice.choice} 
                             handleAnswerChoiceChange={this.handleAnswerChoiceChange} 
                             gameIsOver={this.props.gameIsOver}
@@ -207,6 +209,7 @@ class QuestionBar extends React.Component{
                 <QuestionItem questionItem={question}
                               currentQuestionIndex={currentQuestionIndex} 
                               answerChoices={this.props.answerChoices}
+                              answerChoicesGradedStatus={this.props.answerChoicesGradedStatus}
                               handleAnswerChoiceChange={this.handleAnswerChoiceChange}
                               gameIsOver={this.props.gameIsOver} />
             </div>
@@ -296,6 +299,7 @@ class App extends React.Component {
         this.state = {
             currentQuestionIndex: 0,
             answerChoices: [],
+            answerChoicesGradedStatus: [['', '', '', ''], ['', '', '', ''], ['', '', '', ''], ['', '', '', ''], ['', '', '', '']],
             gameIsOver: false,
         };
         this.handleButton = this.handleButton.bind(this);
@@ -310,6 +314,7 @@ class App extends React.Component {
 
     endGame(){
         this.setState({ gameIsOver: true });
+
         //check reminder flags
         //end game
         //stopTimer
@@ -317,14 +322,40 @@ class App extends React.Component {
         //display score
         //display explanation text
         const correctAnswers = this.getArrayOfCorrectAnswers();
+        this.setState({ answerChoicesGradedStatus: this.gradeAnswerChoices() });
+    }
 
-        correctAnswers.forEach((answer, index) => {
-            if (answer == this.state.answerChoices[index]) {
-                console.log("Question " + index + ": correct")
+    gradeAnswerChoices(){
+        let answerChoicesGradedStatus = [];
+        const correctAnswers = this.getArrayOfCorrectAnswers();
+        const userAnswers = this.state.answerChoices;
+        this.props.questionBank.forEach((questionItem,index) => {
+            answerChoicesGradedStatus[index] = [];
+            if(correctAnswers[index] == userAnswers[index]){
+                //correct
+                questionItem.choices.forEach((choice,index2) => {
+                    //mark the correct choice classname, all else blank
+                    if(choice.choice == correctAnswers[index]){
+                        answerChoicesGradedStatus[index][index2] = 'correct-answer';
+                    } else {
+                        answerChoicesGradedStatus[index][index2] = '';
+                    }
+                });
             } else {
-                console.log("Question " + index + ": incorrect")
+                //wrong
+                questionItem.choices.forEach((choice,index2) => {
+                    //mark the wrongly guessed choice and missed choice
+                    if (choice.choice == correctAnswers[index]){
+                        answerChoicesGradedStatus[index][index2] = 'missed-answer';
+                    } else if (choice.choice == userAnswers[index]){
+                        answerChoicesGradedStatus[index][index2] = 'wrong-answer';
+                    } else {
+                        answerChoicesGradedStatus[index][index2] = '';
+                    }
+                });
             }
         });
+        return answerChoicesGradedStatus;
     }
 
     getArrayOfCorrectAnswers(){
@@ -380,7 +411,9 @@ class App extends React.Component {
                              currentQuestionIndex={this.state.currentQuestionIndex}
                              answerChoices={this.state.answerChoices}
                              handleAnswerChoiceChange={this.handleAnswerChoiceChange}
-                             gameIsOver={this.state.gameIsOver} />
+                             gameIsOver={this.state.gameIsOver} 
+                             answerChoicesGradedStatus={this.state.answerChoicesGradedStatus}
+                             />
                 <BottomBar questionBank={this.props.questionBank} 
                            onButtonClick={this.handleButton} />
             </div>
